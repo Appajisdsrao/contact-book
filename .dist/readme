@@ -1,0 +1,54 @@
+for backend
+to collapse the docker:
+docker-compose down
+to build:
+docker-compose up -d
+to push:
+docker ps
+for knowing the status of host/test api:
+curl http://localhost:5000/contacts
+for restarting:
+Restart-Service docker
+
+verifying the networking connectivity:
+docker network inspect contact-book-network
+ Run the Backend (Flask API)
+Steps:
+Open VS Code and navigate to your backend directory:
+powershell
+Copy
+Edit
+cd path\to\backend
+(Optional) Create a virtual environment:
+powershell
+Copy
+Edit
+python -m venv venv
+venv\Scripts\activate  # On Windows
+Install dependencies:
+powershell
+Copy
+Edit
+pip install -r requirements.txt
+Run the Flask app:
+powershell
+Copy
+Edit
+python contact_book.py
+Run the Frontend (React App)
+Steps:
+Open a new VS Code terminal and navigate to the frontend directory:
+powershell
+Copy
+Edit
+cd path\to\frontend
+Install dependencies:
+powershell
+Copy
+Edit
+npm install
+Start the React app:
+powershell
+Copy
+Edit
+npm start
