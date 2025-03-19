@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        IMAGE_BACKEND = "contact-book-backend"
+        IMAGE_FRONTEND = "contact-book-frontend"
+    }
     stages {
         stage('Clone Repository') {
             steps {
@@ -8,19 +12,20 @@ pipeline {
         }
         stage('Build Docker Images') {
             steps {
-                sh 'docker build -t appajisdsrao/contact-book-frontend -f frontend/Dockerfile frontend/'
-                sh 'docker build -t appajisdsrao/contact-book-backend -f Backend/Dockerfile Backend/'
+                sh 'docker build -t $IMAGE_FRONTEND -f frontend/Dockerfile frontend/'
+                sh 'docker build -t $IMAGE_BACKEND -f Backend/Dockerfile Backend/'
             }
         }
-        stage('Push to Docker Hub') {
+        stage('Save Docker Images Locally') {
             steps {
-                sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
-                sh 'docker push appajisdsrao/contact-book-frontend'
-                sh 'docker push appajisdsrao/contact-book-backend'
+                sh 'docker save -o frontend.tar $IMAGE_FRONTEND'
+                sh 'docker save -o backend.tar $IMAGE_BACKEND'
             }
         }
-        stage('Deploy Containers') {
+        stage('Load and Deploy Containers') {
             steps {
+                sh 'docker load -i frontend.tar'
+                sh 'docker load -i backend.tar'
                 sh 'docker-compose up -d'
             }
         }
